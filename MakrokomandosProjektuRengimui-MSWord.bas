@@ -1,47 +1,50 @@
+' MakrokomandÅ³ koduotÄ— Github'e - UTF8. Norint  makrokomandas naudoti MS Word tekstÄ… reikia konvertuoti
+' Ä¯ CP1257
+
 Sub A_PagamintiLyginamajiIsKeitimuSekimo()
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' Makrokomanda, skirta keitimø sekimams (track changes) paversti formatavimu, reikalingu teisës akto
-' lyginamajame variante: keitimø sekimo áterptu tekstu paşymëtas (paprastai - pabrauktas) tekstas
-' paverèiamas paryğkintu tekstu, keitimo sekimo iğbrauktu tekstu paşymëtas tekstas paşymimas perbraukimu,
-' tekstas, paşymëtas ir áterpimo, ir iğbraukimo şymëmis, paşymimas já iğskiriant şydra spalva
+' Makrokomanda, skirta keitimÅ³ sekimams (track changes) paversti formatavimu, reikalingu teisÄ—s akto
+' lyginamajame variante: keitimÅ³ sekimo Ä¯terptu tekstu paÅ¾ymÄ—tas (paprastai - pabrauktas) tekstas
+' paverÄiamas paryÅ¡kintu tekstu, keitimo sekimo iÅ¡brauktu tekstu paÅ¾ymÄ—tas tekstas paÅ¾ymimas perbraukimu,
+' tekstas, paÅ¾ymÄ—tas ir Ä¯terpimo, ir iÅ¡braukimo Å¾ymÄ—mis, paÅ¾ymimas jÄ¯ iÅ¡skiriant Å¾ydra spalva
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Dim chgAdd As Word.Revision
-' informuojame vartotojà, jei dokumentas be susektø pakeitimø
+' informuojame vartotojÄ…, jei dokumentas be susektÅ³ pakeitimÅ³
 If ActiveDocument.Revisions.Count = 0 Then
-    MsgBox "Ğiame dokumente nëra uşfiksuotø pakeitimø", vbOKOnly + vbInformation
+    MsgBox "Å iame dokumente nÄ—ra uÅ¾fiksuotÅ³ pakeitimÅ³", vbOKOnly + vbInformation
 Else
     ActiveDocument.TrackRevisions = False
-    ' ciklas visø pakeitimø perşiûrai
+    ' ciklas visÅ³ pakeitimÅ³ perÅ¾iÅ«rai
     For Each chgAdd In ActiveDocument.Revisions
-        ' keièiam susektus iğbraukimus á paprastà iğbrauktà tekstà
+        ' keiÄiam susektus iÅ¡braukimus Ä¯ paprastÄ… iÅ¡brauktÄ… tekstÄ…
         If chgAdd.Type = wdRevisionDelete Then
             chgAdd.Range.Font.StrikeThrough = True
             chgAdd.Reject
-        ' perspëjam vartotojà, jei aptiktas teksto perkëlimas;
-        ' tokius makrokomanda palieka nepakeistus, tik paşymi
+        ' perspÄ—jam vartotojÄ…, jei aptiktas teksto perkÄ—limas;
+        ' tokius makrokomanda palieka nepakeistus, tik paÅ¾ymi
         ElseIf chgAdd.Type = wdRevisionMovedFrom Then
-            MsgBox ("Makrokomanda nepalaiko teksto perkëlimø (tik trynimà/áterpimà)."), vbOKOnly + vbExclamation
+            MsgBox ("Makrokomanda nepalaiko teksto perkÄ—limÅ³ (tik trynimÄ…/Ä¯terpimÄ…)."), vbOKOnly + vbExclamation
             chgAdd.Range.Select ' move insertion point
         ElseIf chgAdd.Type = wdRevisionMovedTo Then
-            MsgBox ("Makrokomanda nepalaiko teksto perkëlimø (tik trynimà/áterpimà)."), vbOKOnly + vbExclamation
+            MsgBox ("Makrokomanda nepalaiko teksto perkÄ—limÅ³ (tik trynimÄ…/Ä¯terpimÄ…)."), vbOKOnly + vbExclamation
             chgAdd.Range.Select ' move insertion point
-        ' keièiam susektus áterpimus á paryğkintà tekstà
+        ' keiÄiam susektus Ä¯terpimus Ä¯ paryÅ¡kintÄ… tekstÄ…
         ElseIf chgAdd.Type = wdRevisionInsert Then
             chgAdd.Range.Font.Bold = True
             chgAdd.Accept
-        ' bet kokius kitokius pakeitimus paşymime şaliai ir perspëjame vartotojà
+        ' bet kokius kitokius pakeitimus paÅ¾ymime Å¾aliai ir perspÄ—jame vartotojÄ…
         Else
-            MsgBox ("Rastas kitoks teksto pakeitimas: jis priimtas ir paşymëtas şalsvai."), vbOKOnly + vbExclamation
+            MsgBox ("Rastas kitoks teksto pakeitimas: jis priimtas ir paÅ¾ymÄ—tas Å¾alsvai."), vbOKOnly + vbExclamation
             chgAdd.Range.HighlightColorIndex = wdBrightGreen
             chgAdd.Accept
             ' chgAdd.Range.Select ' move insertion point
         End If
     Next chgAdd
 End If
-' makrokomandos dalis paşymëti tekstui, kuris yra ir paryğkintas, ir iğbrauktas;
-' taip nutinka, kai dokumentas buvo taisomas dviejø skirtingø autoriø, kuriø vienas árağo pakeitimus,
-' o kitas juos ar dalá jø panaikina
-MsgBox ("Jei bus rasta konfliktuojanèiø dviejø autoriø keitimø, jie bus paşymëti şydrai"), vbOKOnly + vbInformation
+' makrokomandos dalis paÅ¾ymÄ—ti tekstui, kuris yra ir paryÅ¡kintas, ir iÅ¡brauktas;
+' taip nutinka, kai dokumentas buvo taisomas dviejÅ³ skirtingÅ³ autoriÅ³, kuriÅ³ vienas Ä¯raÅ¡o pakeitimus,
+' o kitas juos ar dalÄ¯ jÅ³ panaikina
+MsgBox ("Jei bus rasta konfliktuojanÄiÅ³ dviejÅ³ autoriÅ³ keitimÅ³, jie bus paÅ¾ymÄ—ti Å¾ydrai"), vbOKOnly + vbInformation
     Options.DefaultHighlightColorIndex = wdTurquoise
     Selection.Find.ClearFormatting
     With Selection.Find.Font
@@ -50,7 +53,7 @@ MsgBox ("Jei bus rasta konfliktuojanèiø dviejø autoriø keitimø, jie bus paşymëti
         .DoubleStrikeThrough = False
     End With
     Selection.Find.Replacement.ClearFormatting
-    Selection.Find.Replacement.Highlight = wdPink ' iğ tiesø veikia aukğèiau esanti Option... parinktis spalvai parinkti
+    Selection.Find.Replacement.Highlight = wdPink ' iÅ¡ tiesÅ³ veikia aukÅ¡Äiau esanti Option... parinktis spalvai parinkti
     With Selection.Find
         .Text = ""
         .Replacement.Text = "^&"
@@ -70,11 +73,11 @@ End Sub
 
 Sub B_PagamintiGalutiniIsLyginamojo()
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' Makrokomanda, iğ lyginamojo varianto padaranti galutiná teisës akto variantà; prieğ pritaikant ğià
-' makro komandà reikia ásitikinti, kad tekstas, kurio nenorime iğtrinti (pvz., straipsniø pavadinimai),
-' yra be paryğkinimo (visi paryğkinti teksto elementai bus iğtrinami)
+' Makrokomanda, iÅ¡ lyginamojo varianto padaranti galutinÄ¯ teisÄ—s akto variantÄ…; prieÅ¡ pritaikant Å¡iÄ…
+' makro komandÄ… reikia Ä¯sitikinti, kad tekstas, kurio nenorime iÅ¡trinti (pvz., straipsniÅ³ pavadinimai),
+' yra be paryÅ¡kinimo (visi paryÅ¡kinti teksto elementai bus iÅ¡trinami)
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-CarryOn = MsgBox("Ği makrokomanda iğtrins visà iğbrauktà tekstà. Jà leiskite tik ásitikinæ, kad teksto dalys, kuriø iğtrinti nenorite, nëra iğbrauktos. Ar norite tæsti?", vbYesNo, "Ar tikrai to norite?")
+CarryOn = MsgBox("Å i makrokomanda iÅ¡trins visÄ… iÅ¡brauktÄ… tekstÄ…. JÄ… leiskite tik Ä¯sitikinÄ™, kad teksto dalys, kuriÅ³ iÅ¡trinti nenorite, nÄ—ra iÅ¡brauktos. Ar norite tÄ™sti?", vbYesNo, "Ar tikrai to norite?")
 If CarryOn = vbYes Then
 
     Selection.Find.ClearFormatting
@@ -103,9 +106,9 @@ End Sub
 
 Sub C_PazymetiParyskintaIrIsbrauktaTeksta()
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' Makrokomanda, aptinkanti ir paşyminti klaidas, kai lyginamajame variante tas pats tekstas yra paşymëtas
-' ir kaip áterptas (paryğkintas), ir kaip iğbrauktas (pritaikius iğbraukimo formatavimà)
-' Makrokomanda paşymi tokias teksto vietas
+' Makrokomanda, aptinkanti ir paÅ¾yminti klaidas, kai lyginamajame variante tas pats tekstas yra paÅ¾ymÄ—tas
+' ir kaip Ä¯terptas (paryÅ¡kintas), ir kaip iÅ¡brauktas (pritaikius iÅ¡braukimo formatavimÄ…)
+' Makrokomanda paÅ¾ymi tokias teksto vietas
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Selection.Find.ClearFormatting
     With Selection.Find.Font
@@ -136,11 +139,11 @@ End Sub
 
 Sub D_IstrintiParyskintaIrIsbrauktaTeksta()
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' Makrokomanda, aptinkanti ir iğtrinanti klaidas, kai lyginamajame variante tas pats tekstas yra paşymëtas
-' ir kaip áterptas (paryğkintas), ir kaip iğbrauktas (pritaikius iğbraukimo formatavimà)
-' Makrokomanda iğtrina tokias teksto vietas. Jà siûlytina taikyti tik po to, kai tokios vietos yra
-' jau suşymëtos makrokomandos „C_PazymetiParyskintaIrIsbrauktaTeksta()“ ir vartotojas ásitikino, kad
-' neiğtrins nieko naudingo
+' Makrokomanda, aptinkanti ir iÅ¡trinanti klaidas, kai lyginamajame variante tas pats tekstas yra paÅ¾ymÄ—tas
+' ir kaip Ä¯terptas (paryÅ¡kintas), ir kaip iÅ¡brauktas (pritaikius iÅ¡braukimo formatavimÄ…)
+' Makrokomanda iÅ¡trina tokias teksto vietas. JÄ… siÅ«lytina taikyti tik po to, kai tokios vietos yra
+' jau suÅ¾ymÄ—tos makrokomandos â€C_PazymetiParyskintaIrIsbrauktaTeksta()â€œ ir vartotojas Ä¯sitikino, kad
+' neiÅ¡trins nieko naudingo
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Selection.Find.ClearFormatting
     With Selection.Find.Font
@@ -168,13 +171,13 @@ End Sub
 
 Sub E_PagamintiPirminiIsLyginamojo()
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' Su ğia makrokomanda galima iğ lyginamojo teisës akto varianto pagaminti „pirminá“ variantà
-' Makrokomanda paprasèiausiai iğtrina paryğkintà tekstà.
-' Ávykdæ ğià makrokomandà galite gautà rezultatà palyginti (naudojant dokumentø lyginimo funkcijà) su
-' pirminiu keièiamo teisës akto variantu siekdami ásitikinti, kad nepadarëte klaidø sugadindami pirminá
-' tekstà.
+' Su Å¡ia makrokomanda galima iÅ¡ lyginamojo teisÄ—s akto varianto pagaminti â€pirminÄ¯â€œ variantÄ…
+' Makrokomanda paprasÄiausiai iÅ¡trina paryÅ¡kintÄ… tekstÄ….
+' Ä®vykdÄ™ Å¡iÄ… makrokomandÄ… galite gautÄ… rezultatÄ… palyginti (naudojant dokumentÅ³ lyginimo funkcijÄ…) su
+' pirminiu keiÄiamo teisÄ—s akto variantu siekdami Ä¯sitikinti, kad nepadarÄ—te klaidÅ³ sugadindami pirminÄ¯
+' tekstÄ….
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-CarryOn = MsgBox("Ği makrokomanda iğtrins visà paryğkintà tekstà. Jà leiskite tik ásitikinæ, kad teksto dalys, kuriø iğtrinti nenorite, nëra paryğkintos. Ar norite tæsti?", vbYesNo, "Ar tikrai to norite?")
+CarryOn = MsgBox("Å i makrokomanda iÅ¡trins visÄ… paryÅ¡kintÄ… tekstÄ…. JÄ… leiskite tik Ä¯sitikinÄ™, kad teksto dalys, kuriÅ³ iÅ¡trinti nenorite, nÄ—ra paryÅ¡kintos. Ar norite tÄ™sti?", vbYesNo, "Ar tikrai to norite?")
 If CarryOn = vbYes Then
 
     Selection.Find.ClearFormatting
