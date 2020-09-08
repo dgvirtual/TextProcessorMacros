@@ -109,7 +109,8 @@ Sub C_PazymetiParyskintaIrIsbrauktaTeksta()
 ' Makrokomanda, aptinkanti ir pažyminti klaidas, kai lyginamajame variante tas pats tekstas yra pažymėtas
 ' ir kaip įterptas (paryškintas), ir kaip išbrauktas (pritaikius išbraukimo formatavimą)
 ' Makrokomanda pažymi tokias teksto vietas
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''  
+    Options.DefaultHighlightColorIndex = wdTurquoise
     Selection.Find.ClearFormatting
     With Selection.Find.Font
         .Bold = True
@@ -117,9 +118,7 @@ Sub C_PazymetiParyskintaIrIsbrauktaTeksta()
         .DoubleStrikeThrough = False
     End With
     Selection.Find.Replacement.ClearFormatting
-    Selection.Find.Replacement.Highlight = wdYellow
-    
-
+Selection.Find.Replacement.Highlight = wdYellow ' šitas kažkodėl neveikia, veikia aukščiau esantis nustatymas
     With Selection.Find
         .Text = ""
         .Replacement.Text = "^&"
